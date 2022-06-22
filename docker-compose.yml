@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+
+####################
+########## Web #####
+####################
+
+  faapp_web:
+    container_name: faapp_web
+    image: faapp-web:latest
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    ports:
+      - 8000:8000
+    environment:
+      - DB_URL=postgresql://postgres:postgres@faapp_db:5432/postgres
+    depends_on:
+      - faapp_db
+    volumes:
+      - .:/usr/src/app
+      - /tmp/:/tmp/
+
+
+####################
+########## DB ######
+####################
+
+  faapp_db:
+    container_name: faapp_db
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
