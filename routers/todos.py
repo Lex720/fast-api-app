@@ -33,7 +33,7 @@ async def read_all(
 async def read_all_by_user(
     user: dict = Depends(get_current_user),
     db: Session = Depends(get_db),
-) -> list[Todos]:
+) -> list:
     if user is None:
         raise get_auth_exception()
     return (
